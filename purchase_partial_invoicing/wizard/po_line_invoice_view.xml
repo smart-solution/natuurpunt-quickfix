@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_purchase_line_invoice" model="ir.ui.view">
+            <field name="name">Create invoices</field>
+            <field name="model">purchase.order.line_invoice</field>
+            <field name="inherit_id" ref="purchase.view_purchase_line_invoice"></field>
+            <field name="arch" type="xml">
+                <xpath expr="/form/group" position="after">
+                    <group>
+                        <field name="line_ids" nolabel="1" colspan="4">
+                            <tree editable="bottom">
+                                <field name="po_line_id"></field>
+                                <field name="product_qty"></field>
+                                <field name="price_unit"></field>
+                                <field name="invoiced_amount"></field>
+                                <field name="invoiced_qty"></field>
+                            </tree>
+                        </field>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+<!--
+        <record model="ir.actions.act_window" id="purchase.purchase_line_form_action2">
+            <field name="domain">[('order_id.invoice_method', '&lt;&gt;', 'picking'), ('state', 'in', ('approved', 'done')), ('invoiced', '=', False)]</field>
+        </record>
+
+-->
+        <record id="view_purchase_order_line_delivery_tree" model="ir.ui.view">
+            <field name="name">Purchase Order Lines</field>
+            <field name="model">purchase.order.line</field>
+            <field name="inherit_id" ref="natuurpunt_purchase.view_purchase_order_line_delivery_tree"></field>
+            <field name="arch" type="xml">
+                    <field name="delivery_state" position="before">
+                        <field name="delivery_quantity"/>
+                    </field>
+                    <button name="%(natuurpunt_purchase.action_purchase_order_line_delivery)d" position="replace">
+                        <button name="%(natuurpunt_purchase.action_purchase_order_line_delivery)d" string="Delivery Status" type="action" icon="gtk-execute"/>
+                    </button>
+            </field>
+        </record>
+
+        <record id="natuurpunt_purchase.view_purchase_order_line_delivery_wizard" model="ir.ui.view">
+            <field name="name">Purchase Order Line Delivery</field>
+            <field name="model">purchase.order.line.delivery</field>
+            <field name="arch" type="xml">
+                <form string="Purchase Order Line Delivery" version="7.0">
+                    <group>
+                        <field name="delivery_quantity"/>
+                        <field name="delivery_state"/>
+                    </group>
+                    <footer>
+                        <button name="delivery_state_set" string="Save" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    <record model="ir.ui.view" id="view_purchase_order_delivery_status_form">
+        <field name="name">purchase.order.delivery.status.form</field>
+        <field name="inherit_id" ref="natuurpunt_purchase.view_purchase_order_np_form"/>
+        <field name="model">purchase.order</field>
+        <field name="arch" type="xml">
+
+        <xpath expr="//field[@name='order_line']/tree//field[@name='price_subtotal']" position="after">
+            <field name="delivery_quantity"/>
+        </xpath>
+        <xpath expr="//field[@name='order_line']/tree//button[@string='Delivery Status']" position="replace">
+                <button name="%(natuurpunt_purchase.action_purchase_order_line_delivery)d" string="Delivery Status" type="action" icon="gtk-execute"/>
+        </xpath>
+
+        </field>
+    </record>
+    <!-- 
+        <record model="ir.ui.view" id="account_supplier_invoice_pay_blocked_inherit">
+            <field name="name">account.supplier.invoice.pay.blocked.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="natuurpunt_purchase_approval.supplier_invoice_form_approval" />
+            <field name="arch" type="xml">
+                    <field name="state" position="attributes">
+                        <attribute name="statusbar_visible">draft,open,confirmed,approved,payment_blocked,paid</attribute>
+                    </field>
+                     <button name="invoice_approve" position="after">
+                        <button name="invoice_unblock" states="payment_blocked" string="OK for payment" type="object" class="oe_highlight" groups="purchase.group_purchase_manager" />
+                    </button>
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="account_supplier_invoice_line_delivery_qty_inherit">
+            <field name="name">account.supplier.invoice.line.delivery_qty.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form" />
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_line']/tree//field[@name='price_subtotal']" position="after">
+                <field name="po_delivery_qty"/>
+           </xpath>
+
+        </field>
+        </record>
+
+        <record model="ir.ui.view" id="account_supplier_invoice_line_delivery_status_hide_inherit">
+            <field name="name">account.supplier.invoice.line.delivery_status.hide.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="natuurpunt_purchase_approval_ext.account_supplier_invoice_line_delivery_status_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_line']/tree//field[@name='po_delivery_status']" position="replace">
+                    <field name="po_delivery_status" invisible="1"/>
+               </xpath>
+        </field>
+        </record>
+-->
+        <record id="action_invoices_blocked" model="ir.actions.act_window">
+            <field name="name">Invoices blocked for payment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.invoice</field>
+            <field name="domain">[('state','=','payment_blocked')]</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Invoices blocked for payment" id="menu_invoices_blocked" parent="purchase.menu_procurement_management_invoice" action="action_invoices_blocked" sequence="97" groups="purchase.group_purchase_manager"/>
+
+
+    </data>
+</openerp>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="purchase_order_line_tree" model="ir.ui.view">
+            <field name="name">purchase.order.line.tree</field>
+            <field name="model">purchase.order.line</field>
+            <field name="inherit_id" ref="purchase.purchase_order_line_tree"></field>
+            <field name="arch" type="xml">
+                <field name="product_qty" position="after">
+                    <field name="invoiced_qty" />
+                </field>
+            </field>
+        </record>
+
+       <record id="account_journal_po_invoice_form" model="ir.ui.view">
+            <field name="name">account.journal.po.invoice.form</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <field name="centralisation" position="after">
+                    <field name="po_line_invoice_journal"/>
+                </field>
+            </field>
+        </record>
+
+    <record model="ir.ui.view" id="purchase_order_qty_check_form">
+        <field name="name">purchase.order.qty.check.form</field>
+        <field name="model">purchase.order</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <field name="pricelist_id" position="after">
+                <field name="quantity_check"/>
+            </field>
+        </field>
+    </record>
+
+
+    </data>
+</openerp>
