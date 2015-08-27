@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+    <!-- override menu item : add groups -->
+    <menuitem name="Configuration"
+              id="knowledge.menu_document_configuration"
+              parent="knowledge.menu_document"
+              groups="natuurpunt_security.group_natuurpunt_knowledge_manager"
+              sequence="50"/>
+
+    <!-- override default view : hide edit|create buttons for everybody -->
+    <record model="ir.ui.view" id="view_document_file_tree">
+        <field name="name">ir.attachment.inherit</field>
+        <field name="model">ir.attachment</field>
+        <field name="inherit_id" ref="document.view_document_file_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr='//tree[@string="Attachments"]' position='attributes'>
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_document_file_form">
+        <field name="name">ir.attachment.inherit</field>
+        <field name="model">ir.attachment</field>
+        <field name="inherit_id" ref="document.view_document_file_form"/>
+        <field name="arch" type="xml">
+            <xpath expr='//form[@string="Attachments"]' position='attributes'>
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- override menu item quotation : change group -->
+    <menuitem id="purchase.menu_purchase_rfq"
+              parent="purchase.menu_procurement_management"
+              groups="purchase.group_purchase_user"
+              action="purchase.purchase_rfq"
+              sequence="8"/>
+
+    </data>
+</openerp>
+
