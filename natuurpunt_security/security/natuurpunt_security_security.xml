@@ -35,5 +35,13 @@
             <field name="category_id" ref="base.module_category_knowledge_management"/>
         </record>
 
+        <record id="res_organisation_function_active_rule" model="ir.rule">
+            <field name="name">Show funcions only for active partners</field>
+            <field model="ir.model" name="model_id" ref="model_res_organisation_function"/>
+            <field eval="True" name="global"/>
+            <field name="domain_force">[('partner_id.active','=',True),('person_id.active','=',True)]</field>
+        </record>
+
+
     </data>
 </openerp>
